@@ -16,6 +16,8 @@ from rasa_core.trackers import DialogueStateTracker
 
 logger = logging.getLogger(__name__)
 
+config = tf.ConfigProto()  
+config.gpu_options.allow_growth = True
 
 class KerasPolicy(Policy):
     SUPPORTS_ONLINE_TRAINING = True
@@ -144,7 +146,7 @@ class KerasPolicy(Policy):
 
         self.graph = tf.Graph()
         with self.graph.as_default():
-            self.session = tf.Session()
+            self.session = tf.Session(config = config)
             with self.session.as_default():
                 if self.model is None:
                     self.model = self.model_architecture(shuffled_X.shape[1:],
@@ -243,7 +245,7 @@ class KerasPolicy(Policy):
 
                 graph = tf.Graph()
                 with graph.as_default():
-                    session = tf.Session()
+                    session = tf.Session(config = config)
                     with session.as_default():
                         model = load_model(model_file)
 

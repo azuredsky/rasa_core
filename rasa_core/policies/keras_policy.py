@@ -16,7 +16,9 @@ from rasa_core.trackers import DialogueStateTracker
 
 logger = logging.getLogger(__name__)
 
-config = tf.ConfigProto()  
+config = tf.ConfigProto(device_count={"CPU":4},
+                        inter_op_parallelism_threads=0,
+                        intra_op_parallelism_threads=0)  
 config.gpu_options.allow_growth = True
 
 class KerasPolicy(Policy):
